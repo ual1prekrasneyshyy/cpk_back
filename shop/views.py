@@ -194,9 +194,6 @@ class ItemDetailAPI(APIView):
         else:
             return JsonResponse({'error': 'User not authenticated'}, status=401)
 
-
-
-
     def delete(self, request, pk):
         item = self.get_object(pk)
 

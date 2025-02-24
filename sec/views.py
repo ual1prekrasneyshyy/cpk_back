@@ -20,7 +20,7 @@ class RegisterView(CreateAPIView):
 class UserDetailView(RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [IsAuthenticated]  # Only authenticated users can see/edit their details
+    permission_classes = [IsAuthenticated]  # Only authenticated users can see/edit their credentials
 
     def get_object(self):
         return self.request.user

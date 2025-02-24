@@ -34,6 +34,9 @@ class SubCategory(models.Model):
         verbose_name_plural = 'Sub Categories'
         db_table = 'sub_categories'
 
+    def __str__(self):
+        return self.name
+
 
 class Item(models.Model):
     id = models.AutoField(primary_key=True)
