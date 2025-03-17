@@ -69,7 +69,6 @@ class CategoryDetailAPI(APIView):
             return JsonResponse({'error': 'Category not found'}, status=404)
 
 
-
 class SubCategoryAPI(APIView):
     def get(self, request):
         if 'category-id' in request.GET:
