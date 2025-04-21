@@ -405,6 +405,9 @@ def rate_item(request):
         item_id = data.get('id')
         mark = data.get('mark')
 
+        if mark < 0 or mark > 5:
+            return JsonResponse({'error': 'Mark can not be negative or more that 5'})
+
         item = ItemModel.objects.get(pk=item_id)
         rates = []
 
