@@ -1,13 +1,15 @@
-from datetime import datetime
+import datetime
 
 from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
 from django.db import models
+from django.utils import timezone
+
 
 # Create your models here.
-class Category(models.Model):
+class CategoryModel(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
@@ -22,12 +24,12 @@ class Category(models.Model):
         return self.name
 
 
-class SubCategory(models.Model):
+class SubCategoryModel(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     image_url = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='subcategories')
+    category = models.ForeignKey(CategoryModel, on_delete=models.CASCADE, related_name='subcategories')
 
     class Meta:
         verbose_name = 'Sub Category'
@@ -38,15 +40,24 @@ class SubCategory(models.Model):
         return self.name
 
 
-class Item(models.Model):
+class ItemModel(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField()
     image_url = models.TextField()
     price = models.IntegerField()
     rating = models.FloatField()
-    category = models.ForeignKey(SubCategory, on_delete=models.CASCADE, related_name='items')
+    quantity = models.IntegerField()
+    category = models.ForeignKey(SubCategoryModel, on_delete=models.CASCADE, related_name='items')
     lovers = models.ManyToManyField(User, related_name='favourite_items')
+
+
+    # additional field
+    rates = models.JSONField(
+        null=True,
+        blank=True,
+        default=list
+    )
 
     class Meta:
         verbose_name = 'Item'
@@ -57,10 +68,10 @@ class Item(models.Model):
         return f'{self.name}: {self.description}'
 
 
-class Cart(models.Model):
+class CartModel(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
-    started_at = models.DateTimeField(default=datetime.now())
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
+    started_at = models.DateTimeField(default=timezone.now)
     empty = models.BooleanField(default=True)
 
     class Meta:
@@ -69,10 +80,10 @@ class Cart(models.Model):
         db_table = 'carts'
 
 
-class CartItem(models.Model):
+class CartItemModel(models.Model):
     id = models.AutoField(primary_key=True)
-    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    cart = models.ForeignKey(CartModel, on_delete=models.CASCADE, related_name='items')
+    item = models.ForeignKey(ItemModel, on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
     class Meta:
