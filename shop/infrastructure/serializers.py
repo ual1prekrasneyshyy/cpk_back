@@ -51,11 +51,11 @@ class SaveSubcategorySerializer(serializers.Serializer):
 
 
 class ViewCategorySerializer(serializers.Serializer):
-    subcategories = ViewSubcategorySerializer(many=True, read_only=True)
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField()
     description = serializers.CharField()
     image_url = serializers.CharField()
+    subcategories = ViewSubcategorySerializer(many=True, read_only=True)
 
 
 class SaveCategorySerializer(serializers.Serializer):
