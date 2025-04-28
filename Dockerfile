@@ -15,7 +15,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Выполняем миграции
-#RUN python manage.py migrate
+RUN python manage.py migrate
 
 # Открываем порт для приложения
 EXPOSE 8000
