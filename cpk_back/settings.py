@@ -57,10 +57,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # For local development
-    "http://127.0.0.1:8000", # Alternative for local development
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'cpk_back.urls'
 
