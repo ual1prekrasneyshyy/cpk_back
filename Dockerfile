@@ -1,32 +1,24 @@
-# Use the official Python runtime image
-FROM python:3.13
+# Используем официальный Python-образ как базовый
+FROM python:3.11
 
-# Create the app directory
-RUN mkdir /app
-
-# Set the working directory inside the container
+# Устанавливаем рабочую директорию
 WORKDIR /app
 
-# Set environment variables
-# Prevents Python from writing pyc files to disk
-ENV PYTHONDONTWRITEBYTECODE=1
-#Prevents Python from buffering stdout and stderr
-ENV PYTHONUNBUFFERED=1
+# Копируем файл зависимостей
+COPY requirements.txt .
 
-# Upgrade pip
+# Устанавливаем зависимости
 RUN pip install --upgrade pip
-
-# Copy the Django project  and install dependencies
-COPY requirements.txt  /app/
-
-# run this command to install all dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the Django project to the container
-COPY . /app/
+# Копируем все файлы проекта в контейнер
+COPY . .
 
-# Expose the Django port
+# Выполняем миграции
+#RUN python manage.py migrate
+
+# Открываем порт для приложения
 EXPOSE 8000
 
-# Run Django’s development server
+# Запускаем сервер Django
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
